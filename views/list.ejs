@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="/main.css" rel="stylesheet"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body class="grey-bg">
+    <%- include('nav.ejs') %> <!-- ejs파일 가져올떄-->
+    <p ><a href="/write">글작성</a></p>
+    <input class="search">
+    <button class="search-send">검색</button> 
+    <div class="white-bg">
+      <%for(let i=0; i<posts.length; i++){%>
+      <div class="list-box">
+        <h4><a href="/detail/<%= posts[i]._id %>">
+          <!--서버사이드 랜더링 (서버에서 데이터를 받아옴)-->
+          <%=posts[i].title%></h4></a>  
+        <p><%=posts[i].content%></p>
+        <a href="/edit/<%= posts[i]._id%>">✏️</a>
+        <span class="delete" data-id = "<%= posts[i]._id%>">🗑️</span>
+      </div>
+    <% } %>  
+      
+    </div> 
+    <a href="/list/next/<%= posts[posts.length - 1]._id %>">다음</a>
+  </body>
+  <script>
+    $(document).ready(() => {
+        $(".delete").on('click',function(e){
+          var parentElement = $(this).parent();
+          $.ajax({
+            url: '/delete?id='+ $(this).data('id'),
+            type:'DELETE',
+          })
+          .done(function(response) {
+            console.log('문서 삭제 성공:', response);
+            parentElement.hide(); // 삭제된 요소를 화면에서 숨기기
+          })
+          .fail(function(xhr, status, error) {
+            console.error('문서 삭제 실패:', error);
+          });
+
+
+        })
+    })
+    $(".search-send").on('click',function(){
+      let input = $('.search').val();
+      location.href= '/search?val=' + input
+      
+    })
+  </script>
+</html>
