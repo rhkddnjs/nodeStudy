@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head
+>
+<body>
+ <div class="container mx-auto p-5 w-9/12">
+  <div class="text-3xl font-bold mb-10">{{title}}</div>
+  <div class="flex flex-row mb-5 space-x-2">
+    <input type="text" name="search" id="search" class="input input-sm input-bordered w-full" value="{{search}}" placeholder="검색어를 입력하세요." />
+    <button class="btn btn-sm" onclick="location.href=`/?search=${document.getElementById('search').value}`">검색</button>
+    <a href="/write" class="btn btn-sm btn-primary"> 글쓰기</a>
+  </div>
+  <div class="mb-5">
+    <table class="table w-full">
+      <thead>
+        <tr>
+          <th width="50%">제목</th>
+          <th>작성자</th>
+          <th>조회수</th>
+          <th>등록일</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each posts}}
+          <tr>
+            <td><a href="/detail/{{_id}}">{{title}}</a></td>
+            <td>{{writer}}</td>
+            <td>{{hits}}</td>
+            <td>{{dateString createdDt}}</td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="flex justify-center">
+    <div class="btn-group">
+      {{#with paginator}}
+        <a class="btn btn-sm btn-outline" href="/?page=1&search={{@root.search}}">&lt;&lt;</a>       
+        {{#if hasPrev}}
+          <a class="btn btn-sm btn-outline" href="/?page={{prevPage}}&search={{@root.search}}">&lt;</a>          
+        {{else}}
+          <a class="btn btn-sm btn-disabled">&lt;</a>
+        {{/if}}       
+        {{#each pageList}}
+          {{#if (eq . @root.paginator.page)}}
+            <a class="btn btn-sm btn-outline btn-active">{{.}}</a>
+          {{else}}
+            <a class="btn btn-sm btn-outline" href="/?page={{.}}&search={{@root.search}}">{{.}}</a>
+          {{/if}}
+        {{/each}}         
+        {{#if hasNext}}
+          <a class="btn btn-sm btn-outline" href="/?page={{nextPage}}&search={{@root.search}}">&gt;</a>          
+        {{else}}
+          <a class="btn btn-sm btn-disabled">&gt;</a>
+        {{/if}}
+        <a class="btn btn-sm btn-outline" href="/?page={{lastPage}}&search={{@root.search}}">&gt;&gt;</a>
+      {{/with}}
+    </div>
+  </div>
+</div>
+</body>
+
+<style>
+body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            width: 60%;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        td a {
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        td a:hover {
+            text-decoration: underline;
+        }
+
+        .pagination {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .pagination a {
+            display: inline-block;
+            padding: 8px 16px;
+            text-decoration: none;
+            color: #007bff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 0 5px;
+        }
+
+        .pagination a:hover {
+            background-color: #f2f2f2;
+        }
+
+</style>
+</html>
