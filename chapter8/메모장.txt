@@ -1,0 +1,6 @@
+npm install @nestjs/core @nestjs/common @nestjs/platform-express reflect-metadata typescript
+npx ts-node-dev src/main.ts
+npm install -g @nestjs/cli
+cd chapter8
+nest new blog
+npm install @nestjs/mongoose mongoose
